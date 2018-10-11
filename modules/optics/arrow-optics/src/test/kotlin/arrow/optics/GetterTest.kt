@@ -1,10 +1,14 @@
 package arrow.optics
 
 import arrow.core.*
+import arrow.data.State
 import arrow.data.k
+import arrow.data.map
+import arrow.data.run
 import arrow.instances.StringMonoidInstance
 import arrow.instances.monoid
 import arrow.test.UnitSpec
+import arrow.test.generators.genFunctionAToB
 import io.kotlintest.KTestJUnitRunner
 import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
@@ -126,6 +130,27 @@ class GetterTest : UnitSpec() {
       val first = tokenGetter.second<Int>()
       forAll(Gen.int(), TokenGen) { int: Int, token: Token ->
         first.get(int toT token) == int toT token.value
+      }
+    }
+
+    "Extract should extract the focus from the state" {
+      forAll(TokenGen) { token ->
+        tokenGetter.extract().run(token) ==
+          State { token: Token ->
+            token toT tokenGetter.get(token)
+          }.run(token)
+      }
+    }
+
+    "toState should be an alias to extract" {
+      forAll(TokenGen) { token ->
+        tokenGetter.toState().run(token) == tokenGetter.extract().run(token)
+      }
+    }
+
+    "Extracts with f should be same as extract and map" {
+      forAll(TokenGen, genFunctionAToB<String, String>(Gen.string())) { token, f ->
+        tokenGetter.extracts(f).run(token) == tokenGetter.extract().map(f).run(token)
       }
     }
 

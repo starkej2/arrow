@@ -18,11 +18,11 @@ Creating a `Getter` can be done by referencing a property of a data classes or b
 import arrow.optics.*
 import arrow.*
 
-data class Foo(val bar: Int)
+data class Player(val health: Int)
 
-val barGetter = Getter(Foo::bar)
-
-barGetter.get(Foo(5))
+val healthGetter = Getter(Player::health)
+val player = Player(75)
+healthGetter.get(player)
 ```
 ```kotlin:ank
 import arrow.data.*
@@ -42,7 +42,21 @@ import arrow.optics.instances.*
 
 val headGetter: Getter<NonEmptyList<String>, String> = NonEmptyList.head<String>().asGetter()
 val tupleGetter: Getter<Tuple2<String, Int>, String> = Tuple2.first<String, Int>().asGetter()
-``` 
+```
+
+There are also some convenience methods to make working with [State]({{ '/docs/datatypes/state' | relative_url }}) easier.
+
+```kotlin:ank
+import arrow.data.*
+
+val inspectHealth = healthGetter.extract()
+inspectHealth.run(player)
+```
+
+```kotlin:ank
+val takeMedpack = healthGetter.extracts { it + 25 }
+takeMedpack.run(player)
+```
 
 ## Composition
 

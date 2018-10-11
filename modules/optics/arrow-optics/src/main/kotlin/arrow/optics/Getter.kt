@@ -1,6 +1,8 @@
 package arrow.optics
 
 import arrow.core.*
+import arrow.data.State
+import arrow.data.map
 import arrow.higherkind
 import arrow.typeclasses.Monoid
 
@@ -121,6 +123,22 @@ interface Getter<S, A> : GetterOf<S, A> {
   fun asFold(): Fold<S, A> = object : Fold<S, A> {
     override fun <R> foldMap(M: Monoid<R>, s: S, f: (A) -> R): R = f(get(s))
   }
+
+  /**
+   * Extracts the focus [A] viewed through the [Getter].
+   */
+  fun extract(): State<S, A> =  State { s -> Tuple2(s, get(s)) }
+
+  /**
+   * Transforms a [Getter] into a [State].
+   * Alias for [extract].
+   */
+  fun toState(): State<S, A> = extract()
+
+  /**
+   * Extracts the focus [A] viewed through the [Getter] and applies [f] to it.
+   */
+  fun <B> extracts(f: (A) -> B): State<S, B> = extract().map(f)
 
 }
 
