@@ -46,7 +46,7 @@ class MonoKTest : UnitSpec() {
 
   init {
     testLaws(
-      AsyncLaws.laws(MonoK.async(), { MonoK.just(it) }, EQ(), EQ())
+      AsyncLaws.laws(MonoK.async(), EQ(), EQ())
     )
 
     "Multi-thread Singles finish correctly" {

@@ -58,7 +58,6 @@ class KleisliTest : UnitSpec() {
       testLaws(
         BracketLaws.laws(
           Kleisli.bracket<ForIO, Int, Throwable>(IO.bracket()),
-          { Kleisli { x: Int -> IO.just(x) } },
           EQBracket(),
           EQBracketError(),
           EQBracket())
