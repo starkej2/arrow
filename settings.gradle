@@ -83,5 +83,9 @@ include {
         shadow {
             _ 'shadow'
         }
+        
+        streams {
+            _ 'streams'
+        }
     }
 }
