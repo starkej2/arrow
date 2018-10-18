@@ -54,7 +54,7 @@ inspectHealth.run(player)
 ```
 
 ```kotlin:ank
-val takeMedpack = healthGetter.extracts { it + 25 }
+val takeMedpack = healthGetter.extractMap { it + 25 }
 takeMedpack.run(player)
 ```
 
