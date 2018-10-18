@@ -5,7 +5,6 @@ import arrow.data.State
 import arrow.data.k
 import arrow.data.map
 import arrow.data.run
-import arrow.instances.StringMonoidInstance
 import arrow.instances.monoid
 import arrow.test.UnitSpec
 import arrow.test.generators.genFunctionAToB
@@ -148,9 +147,9 @@ class GetterTest : UnitSpec() {
       }
     }
 
-    "Extracts with f should be same as extract and map" {
+    "extractMap with f should be same as extract and map" {
       forAll(TokenGen, genFunctionAToB<String, String>(Gen.string())) { token, f ->
-        tokenGetter.extracts(f).run(token) == tokenGetter.extract().map(f).run(token)
+        tokenGetter.extractMap(f).run(token) == tokenGetter.extract().map(f).run(token)
       }
     }
 
