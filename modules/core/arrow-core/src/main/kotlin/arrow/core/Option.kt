@@ -186,7 +186,7 @@ data class Some<out T>(val t: T) : Option<T>() {
 fun <T> Option<T>.getOrElse(default: () -> T): T = fold({ default() }, ::identity)
 
 /**
- * Returns this option's if the option is nonempty, otherwise
+ * Returns this option if the option is nonempty, otherwise
  * returns another option provided lazily by `default`.
  *
  * @param alternative the default option if this is empty.
